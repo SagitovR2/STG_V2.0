@@ -5,6 +5,8 @@ class Board:
     def __init__(self, width, height):
         self.width = width
         self.height = height
+        self.standartWidth = width
+        self.standartHeight = height
         self.board = [[-1] * height for _ in range(width)]
         self.left = 0
         self.top = 0

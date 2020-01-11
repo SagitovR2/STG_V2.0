@@ -28,3 +28,14 @@ class EnemySprites(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = coords[0]
         self.rect.y = coords[1]
+
+    def update(self, *args):
+        dir = args[0]
+        if dir == "up":
+            self.rect.y -= 40
+        elif dir == "down":
+            self.rect.y += 40
+        elif dir == "right":
+            self.rect.x += 40
+        elif dir == "left":
+            self.rect.x -= 40
