@@ -5,11 +5,11 @@ class Board:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.board = [[0] * width for _ in range(height)]
-        self.left = 10
-        self.top = 10
-        self.cell_size = 30
-        self.color = pygame.Color("white")
+        self.board = [[-1] * height for _ in range(width)]
+        self.left = 0
+        self.top = 0
+        self.cell_size = 40
+        self.color = pygame.Color("black")
 
     def set_view(self, left=10, top=10, cell_size=30):
         self.left = left
