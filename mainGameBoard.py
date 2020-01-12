@@ -5,6 +5,8 @@ from backImageSprites import BackImage
 import random
 from Player import Player, PlayerSprites
 from Enemys import Enemy, EnemySprites
+import names
+import sqlite3
 
 
 class mainGameBoard(Board):
@@ -22,6 +24,13 @@ class mainGameBoard(Board):
         self.pause = False
         self.attack_dir = ""
         self.player = Player((random.randint(0, 31), random.randint(0, 17)), self.playerImage, "")
+        self.con = sqlite3.connect('database/database.db')
+        self.cur = self.con.cursor()
+        self.player_coords = list(self.cur.execute(
+            "SELECT position FROM players WHERE login = '{log}'".format(log=names.player_login)
+        ))[0][0].split()
+        self.player = Player((int(self.player_coords[0]), int(self.player_coords[1])), playerImage, "")
+        names.player_coords = (int(self.player_coords[0]), int(self.player_coords[1]))
         self.board[self.player.return_coords()[0]][self.player.return_coords()[1]] = 1
         self.EnemySpr = []
         self.eqip = [0, 0, 0, 0, 0, 0]
@@ -190,6 +199,7 @@ class mainGameBoard(Board):
                     self.board[self.player.coords[0]][self.player.coords[1]] = -1
                     self.player.coords = (self.player.coords[0] - 1, self.player.coords[1])
                     self.playerSpr.update("left")
+        names.player_coords = self.player.return_coords()
 
     def log(self):
         if not self.hasLog:
