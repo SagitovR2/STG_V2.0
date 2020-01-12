@@ -31,6 +31,7 @@ class mainGameBoard(Board):
         self.EAD = False
         self.EAR = False
         self.EAL = False
+        self.items = []
         self.logMeseges = []
         for i in range(enemyCount):
             x = random.randint(0, 31)
@@ -526,3 +527,6 @@ class mainGameBoard(Board):
             else:
                 defnse += self.dora
         self.player.updateAtributs(strength, agility, intelligent, defnse, attack)
+
+    def randomItemInRandomPlace(self):
+        pass

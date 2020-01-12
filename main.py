@@ -7,10 +7,12 @@ NEWENEMYCREATE = pygame.USEREVENT + 1
 ENEMYMOVE = pygame.USEREVENT + 2
 DELHEROATTACK = pygame.USEREVENT + 3
 DELENEMYATTACK = pygame.USEREVENT + 4
+CREATEITEM = pygame.USEREVENT + 5
 pygame.time.set_timer(NEWENEMYCREATE, 10000)
 pygame.time.set_timer(ENEMYMOVE, 2000)
 pygame.time.set_timer(DELHEROATTACK, 500)
 pygame.time.set_timer(DELENEMYATTACK, 1500)
+pygame.time.set_timer(CREATEITEM, 20000)
 size = width, height = 1280, 720
 clock = pygame.time.Clock()
 fps = 60
@@ -28,9 +30,9 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 mgb.pause = not mgb.pause
-            if event.key == pygame.K_l:
+            if event.key == pygame.K_l and not mgb.hasInventory:
                 screen = mgb.log()
-            if event.key == pygame.K_i:
+            if event.key == pygame.K_i and not mgb.hasLog:
                 screen = mgb.showInventory()
             if event.key == pygame.K_1 and mgb.hasInventory:
                 mgb.showInfoAbout("head")
@@ -47,6 +49,8 @@ while running:
             if event.key == pygame.K_m and mgb.hasLog:
                 mgb.showInfoAbout("shild")
         if not mgb.pause:
+            if event.type == CREATEITEM:
+                mgb.randomItemInRandomPlace()
             if event.type == NEWENEMYCREATE or len(mgb.enemys) == 0:
                 if len(mgb.enemys) < 10:
                     mgb.moreEnemys()
