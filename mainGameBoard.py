@@ -18,6 +18,12 @@ class mainGameBoard(Board):
         self.playerSprites = pygame.sprite.Group()
         self.EnemySprites = pygame.sprite.Group()
         self.EnemyImage = load_image(enemyImage)
+        self.headImage = load_image("head.png")
+        self.bodyImage = load_image("body.png")
+        self.armsImage = load_image("arms.png")
+        self.footImage = load_image("foot.png")
+        self.weaponImage = load_image("weapon.png")
+        self.shildImage = load_image("shild.png")
         self.enemys = []
         self.pause = False
         self.attack_dir = ""
@@ -32,6 +38,7 @@ class mainGameBoard(Board):
         self.EAR = False
         self.EAL = False
         self.items = []
+        self.itemOnBoard = 0
         self.logMeseges = []
         for i in range(enemyCount):
             x = random.randint(0, 31)
@@ -58,6 +65,7 @@ class mainGameBoard(Board):
                     self.cell_size, self.cell_size
                 )
                 BackImage(self.backSprites, self.backImage, rect)
+        self.items.append()
 
     def updateEnemys(self):
         for i in self.enemys:
@@ -92,6 +100,18 @@ class mainGameBoard(Board):
                     screen.blit(self.blade_right, (col * 40, row * 40))
                 if self.board[col][row] == -8 or self.board[col][row] == 16:
                     screen.blit(self.blade_up, (col * 40, row * 40))
+                if self.board[col][row] == 30:
+                    screen.blit(self.headImage, (col * 40, row * 40))
+                if self.board[col][row] == 31:
+                    screen.blit(self.bodyImage, (col * 40, row * 40))
+                if self.board[col][row] == 32:
+                    screen.blit(self.armsImage, (col * 40, row * 40))
+                if self.board[col][row] == 33:
+                    screen.blit(self.footImage, (col * 40, row * 40))
+                if self.board[col][row] == 34:
+                    screen.blit(self.weaponImage, (col * 40, row * 40))
+                if self.board[col][row] == 35:
+                    screen.blit(self.shildImage, (col * 40, row * 40))
 
     def on_click(self, cell_coords):
         if cell_coords:
@@ -529,4 +549,21 @@ class mainGameBoard(Board):
         self.player.updateAtributs(strength, agility, intelligent, defnse, attack)
 
     def randomItemInRandomPlace(self):
-        pass
+        x = random.randint(0, 31)
+        y = random.randint(0, 17)
+        while self.board[x][y] != -1:
+            x = random.randint(0, 31)
+            y = random.randint(0, 17)
+        item = random.choice(self.items)
+        if item.type == "head":
+            self.board[x][y] = 30
+        if item.type == "body":
+            self.board[x][y] = 31
+        if item.type == "arms":
+            self.board[x][y] = 32
+        if item.type == "foot":
+            self.board[x][y] = 33
+        if item.type == "weapon":
+            self.board[x][y] = 34
+        if item.type == "shild":
+            self.board[x][y] = 35
