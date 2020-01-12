@@ -76,8 +76,14 @@ while running:
                 if event.key == pygame.K_a:
                     mgb.go("left")
     if names.menu:
+<<<<<<< HEAD
         names.menu = False
         names.game = True
+=======
+        app = QApplication(sys.argv)
+        form_menu = FormStarting()
+        form_menu.show()
+>>>>>>> 49d37eb4b6214f11cc205f6c80df19b9d7d49e6f
     if names.game:
         screen.fill((0, 0, 0), (0, 0, width, height))
         mgb.render(screen)

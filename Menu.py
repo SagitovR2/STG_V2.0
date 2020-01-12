@@ -37,11 +37,10 @@ class Registration(QMainWindow):
         self.cur = self.con.cursor()
         main_window = uic.loadUi('ui_files/reg.ui', self)
         self.pushButton.clicked.connect(self.reg)
-        self.comboBox.addItems(i[0] for i in
-            list(self.cur.execute(
-                'SELECT name FROM heroes'
-            ))
-        )
+        self.lst = []
+        for i in self.cur.execute('SELECT name FROM heroes').fetchall():
+            self.lst.append(i[0])
+        self.comboBox.addItems(self.lst)
         self.comboBox.activated[str].connect(self.infohero)
 
     def infohero(self):
