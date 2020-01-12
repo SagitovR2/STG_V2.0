@@ -1,0 +1,2 @@
+menu = True
+game = False
