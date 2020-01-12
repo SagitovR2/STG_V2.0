@@ -19,10 +19,13 @@ class mainGameBoard(Board):
         self.EnemySprites = pygame.sprite.Group()
         self.EnemyImage = load_image(enemyImage)
         self.enemys = []
+        self.pause = False
         self.attack_dir = ""
         self.player = Player((random.randint(0, 31), random.randint(0, 17)), self.playerImage, "")
         self.board[self.player.return_coords()[0]][self.player.return_coords()[1]] = 1
         self.EnemySpr = []
+        self.eqip = [0, 0, 0, 0, 0, 0]
+        self.hasInventory = False
         self.hasLog = False
         self.EAU = False
         self.EAD = False
@@ -190,14 +193,16 @@ class mainGameBoard(Board):
     def log(self):
         if not self.hasLog:
             self.hasLog = True
-            screen = pygame.display.set_mode((self.standartWidth * 40 + 300, self.standartHeight * 40))
+            screen = pygame.display.set_mode((self.currentWidth + 300, self.currentHeight))
+            self.currentWidth += 300
             screen.fill((0, 0, 0), (self.standartWidth * 40, 0, 300, self.standartHeight * 40))
             self.render(screen)
             self.screen = screen
             return screen
         else:
             self.hasLog = False
-            screen = pygame.display.set_mode((self.standartWidth * 40, self.standartHeight * 40))
+            screen = pygame.display.set_mode((self.currentWidth - 300, self.currentHeight))
+            self.currentWidth -= 300
             self.render(screen)
             self.screen = screen
             self.logMeseges = []
@@ -338,3 +343,186 @@ class mainGameBoard(Board):
                     self.cell_size, self.cell_size
                 )
                 BackImage(self.backSprites, self.backImage, rect)
+
+    def showInventory(self):
+        if not self.hasInventory:
+            self.hasInventory = True
+            screen = pygame.display.set_mode((self.currentWidth, self.currentHeight + 100))
+            self.currentHeight += 100
+            self.render(screen)
+            self.screen = screen
+            font = pygame.font.Font(None, 25)
+            text = font.render("На вас надето:", 1, (255, 255, 255))
+            text_x = 5
+            text_y = self.standartHeight * 40
+            screen.blit(text, (text_x, text_y))
+
+            if self.eqip[0] == 0:
+                head = "ничего"
+            else:
+                head = self.eqip[0].name
+            text = font.render("На голове: " + head, 1, (255, 255, 255))
+            text_x = 5
+            text_y = self.standartHeight * 40 + text.get_height()
+            screen.blit(text, (text_x, text_y))
+
+            if self.eqip[1] == 0:
+                body = "ничего"
+            else:
+                body = self.eqip[1].name
+            text = font.render("На теле: " + body, 1, (255, 255, 255))
+            text_x = 5
+            text_y = self.standartHeight * 40 + text.get_height() * 2
+            screen.blit(text, (text_x, text_y))
+
+            if self.eqip[2] == 0:
+                arms = "ничего"
+            else:
+                arms = self.eqip[2].name
+            text = font.render("На руках: " + arms, 1, (255, 255, 255))
+            text_x = 5
+            text_y = self.standartHeight * 40 + text.get_height() * 3
+            screen.blit(text, (text_x, text_y))
+
+            if self.eqip[3] == 0:
+                foot = "ничего"
+            else:
+                foot = self.eqip[3].name
+            text = font.render("На ногах: " + foot, 1, (255, 255, 255))
+            text_x = 5
+            text_y = self.standartHeight * 40 + text.get_height() * 4
+            screen.blit(text, (text_x, text_y))
+
+            if self.eqip[4] == 0:
+                weapon = "кулаки"
+            else:
+                weapon = self.eqip[4].name
+            text = font.render("Оружие: " + weapon, 1, (255, 255, 255))
+            text_x = 5 + 200
+            text_y = self.standartHeight * 40
+            screen.blit(text, (text_x, text_y))
+
+            if self.eqip[5] == 0:
+                shild = "кулаки"
+            else:
+                shild = self.eqip[5].name
+            text = font.render("Щит: " + shild, 1, (255, 255, 255))
+            text_x = 5 + 200
+            text_y = self.standartHeight * 40 + text.get_height()
+            screen.blit(text, (text_x, text_y))
+            return screen
+        else:
+            self.hasInventory = False
+            screen = pygame.display.set_mode((self.currentWidth, self.currentHeight - 100))
+            self.currentHeight -= 100
+            screen.fill((0, 0, 0), pygame.Rect(0, self.standartHeight * 40, self.standartWidth * 40, 100))
+            self.render(screen)
+            self.screen = screen
+            return screen
+
+    def showNothing(self):
+        font = pygame.font.Font(None, 25)
+        text = font.render("Ничего: ", 1, (255, 255, 255))
+        text_x = 5 + 400
+        text_y = self.standartHeight * 40
+        self.screen.blit(text, (text_x, text_y))
+        text = font.render("Сила: 0", 1, (255, 255, 255))
+        text_x = 5 + 400
+        text_y = self.standartHeight * 40 + text.get_height()
+        self.screen.blit(text, (text_x, text_y))
+        text = font.render("Ловкость: 0", 1, (255, 255, 255))
+        text_x = 5 + 400
+        text_y = self.standartHeight * 40 + text.get_height() * 2
+        self.screen.blit(text, (text_x, text_y))
+        text = font.render("Интелект: 0", 1, (255, 255, 255))
+        text_x = 5 + 400
+        text_y = self.standartHeight * 40 + text.get_height() * 3
+        self.screen.blit(text, (text_x, text_y))
+        text = font.render("Защита: 0", 1, (255, 255, 255))
+        text_x = 5 + 400
+        text_y = self.standartHeight * 40 + text.get_height() * 4
+        self.screen.blit(text, (text_x, text_y))
+
+    def showInfo(self, name, strengh, agility, intelligent, wdora, dora):
+        font = pygame.font.Font(None, 25)
+        text = font.render("{}: ".format(name), 1, (255, 255, 255))
+        text_x = 5 + 400
+        text_y = self.standartHeight * 40
+        self.screen.blit(text, (text_x, text_y))
+        text = font.render("Сила: {}".format(strengh), 1, (255, 255, 255))
+        text_x = 5 + 400
+        text_y = self.standartHeight * 40 + text.get_height()
+        self.screen.blit(text, (text_x, text_y))
+        text = font.render("Ловкость: {}".format(agility), 1, (255, 255, 255))
+        text_x = 5 + 400
+        text_y = self.standartHeight * 40 + text.get_height() * 2
+        self.screen.blit(text, (text_x, text_y))
+        text = font.render("Интелект: {}".format(intelligent), 1, (255, 255, 255))
+        text_x = 5 + 400
+        text_y = self.standartHeight * 40 + text.get_height() * 3
+        self.screen.blit(text, (text_x, text_y))
+        if wdora == "a":
+            text = font.render("Урон: {}".format(dora), 1, (255, 255, 255))
+        else:
+            text = font.render("Защита: {}".format(dora), 1, (255, 255, 255))
+        text_x = 5 + 400
+        text_y = self.standartHeight * 40 + text.get_height() * 4
+        self.screen.blit(text, (text_x, text_y))
+
+    def showInfoAbout(self, item):
+        self.screen.fill((0, 0, 0), pygame.Rect(5 + 400, self.standartHeight * 40, 200, 200))
+        if item == "head":
+            if self.eqip[0] == 0:
+                self.showNothing()
+            else:
+                self.showInfo(self.eqip[0].name, self.eqip[0].strength,
+                              self.eqip[0].agility, self.eqip[0].intelligent, "d", self.eqip[0].dora)
+        if item == "body":
+            if self.eqip[1] == 0:
+                self.showNothing()
+            else:
+                self.showInfo(self.eqip[1].name, self.eqip[1].strength,
+                              self.eqip[1].agility, self.eqip[1].intelligent, "d", self.eqip[1].dora)
+        if item == "arms":
+            if self.eqip[2] == 0:
+                self.showNothing()
+            else:
+                self.showInfo(self.eqip[2].name, self.eqip[2].strength,
+                              self.eqip[2].agility, self.eqip[2].intelligent, "d", self.eqip[2].dora)
+        if item == "foot":
+            if self.eqip[3] == 0:
+                self.showNothing()
+            else:
+                self.showInfo(self.eqip[3].name, self.eqip[3].strength,
+                              self.eqip[3].agility, self.eqip[3].intelligent, "d", self.eqip[3].dora)
+        if item == "weapon":
+            if self.eqip[4] == 0:
+                self.showInfo("Кулаки", 0,
+                              0, 0, "a", 10)
+            else:
+                self.showInfo(self.eqip[4].name, self.eqip[4].strength,
+                              self.eqip[4].agility, self.eqip[4].intelligent, "a", self.eqip[4].dora)
+        if item == "shild":
+            if self.eqip[5] == 0:
+                self.showInfo("Кулаки", 0,
+                              0, 0, "d", 0)
+            else:
+                self.showInfo(self.eqip[5].name, self.eqip[5].strength,
+                              self.eqip[5].agility, self.eqip[5].intelligent, "d", self.eqip[5].dora)
+
+    def updateEqip(self, old_numb, newItem):
+        self.eqip[old_numb] = newItem
+        strength = 0
+        agility = 0
+        intelligent = 0
+        defnse = 0
+        attack = 0
+        for i in range(6):
+            strength += self.eqip[i].strength
+            agility += self.eqip[i].agility
+            intelligent += self.eqip[i].intelligent
+            if i == 4:
+                attack += self.dora
+            else:
+                defnse += self.dora
+        self.player.updateAtributs(strength, agility, intelligent, defnse, attack)

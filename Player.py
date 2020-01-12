@@ -5,8 +5,13 @@ class Player:
     def __init__(self, coords, image, desc):
         self.coords = coords
         self.image = image
-        self.hp = 100
         self.attackDamage = 10
+        self.strength = 0
+        self.agility = 0
+        self.intelligent = 0
+        self.defense = 0
+        self.hp = 100 + self.strength * 10
+        self.mana = self.intelligent * 10
 
     def return_coords(self):
         return self.coords
@@ -19,6 +24,17 @@ class Player:
 
     def attack(self, tzel):
         tzel.hp -= self.attackDamage
+
+    def updateAtributs(self, strength, agility, intelligent, defense, attack):
+        self.hp += strength * 10 - self.strength * 10
+        self.strength = strength
+        self.agility = agility
+        self.mana += intelligent * 10 - self.intelligent * 10
+        self.intelligent = intelligent
+        self.attackDamage = 10 + attack
+        self.defense = defense
+
+
 
 
 class PlayerSprites(pygame.sprite.Sprite):

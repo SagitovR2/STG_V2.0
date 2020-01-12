@@ -7,6 +7,8 @@ class Board:
         self.height = height
         self.standartWidth = width
         self.standartHeight = height
+        self.currentWidth = width * 40
+        self.currentHeight = height * 40
         self.board = [[-1] * height for _ in range(width)]
         self.left = 0
         self.top = 0
