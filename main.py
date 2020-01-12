@@ -2,7 +2,7 @@ import pygame
 from mainGameBoard import mainGameBoard
 from PyQt5.QtWidgets import QApplication
 from Menu import FormStarting, Registration
-import returning_menuandgame
+import names
 import sys
 
 
@@ -24,11 +24,11 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == pygame.BUTTON_LEFT and returning_menuandgame.game \
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == pygame.BUTTON_LEFT and names.game \
                 and mgb.attack_coords == (0, 0):
             mgb.get_click(event.pos)
             c = 0
-        if event.type == pygame.KEYDOWN and returning_menuandgame.game:
+        if event.type == pygame.KEYDOWN and names.game:
             if event.key == pygame.K_w:
                 mgb.go("up")
             if event.key == pygame.K_s:
@@ -37,15 +37,15 @@ while running:
                 mgb.go("right")
             if event.key == pygame.K_a:
                 mgb.go("left")
-    if returning_menuandgame.menu:
+    if names.menu:
         app = QApplication(sys.argv)
         form_menu = FormStarting()
         form_menu.show()
-    if returning_menuandgame.game:
+    if names.game:
         screen.fill((0, 0, 0))
         mgb.render(screen)
     pygame.display.flip()
     clock.tick(fps)
-returning_menuandgame.game = False
-returning_menuandgame.menu = True
+names.game = False
+names.menu = True
 pygame.quit()

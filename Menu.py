@@ -2,7 +2,7 @@ import sys
 import sqlite3
 from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QPushButton, QLineEdit
-import returning_menuandgame
+import names
 
 
 class FormStarting(QMainWindow):
@@ -22,8 +22,8 @@ class FormStarting(QMainWindow):
     def vhod(self):
         self.d = [i for i in self.cur.execute("SELECT login, password FROM players")]
         if (self.lineEdit.text(), self.lineEdit_2.text()) in self.d:
-            returning_menuandgame.menu = False
-            returning_menuandgame.game = True
+            names.menu = False
+            names.game = True
             self.close()
         else:
             self.label_3.setText('Такого пользователя не существует.')
