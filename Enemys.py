@@ -7,6 +7,7 @@ class Enemy:
         self.image = image
         self.hp = 50
         self.attackDamage = 10
+        self.defense = 0
 
     def return_coords(self):
         return self.coords
@@ -18,7 +19,7 @@ class Enemy:
         self.coords = coords
 
     def attack(self, tzel):
-        tzel.hp -= self.attackDamage
+        tzel.hp = min(tzel.hp - self.attackDamage, tzel.hp - 1)
 
 
 class EnemySprites(pygame.sprite.Sprite):

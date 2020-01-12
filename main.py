@@ -78,7 +78,7 @@ while running:
     if names.menu:
         names.menu = False
         names.game = True
-    if game:
+    if names.game:
         screen.fill((0, 0, 0), (0, 0, width, height))
         mgb.render(screen)
     pygame.display.flip()

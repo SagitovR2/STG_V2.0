@@ -23,7 +23,7 @@ class Player:
         self.coords = coords
 
     def attack(self, tzel):
-        tzel.hp -= self.attackDamage
+        tzel.hp -= self.attackDamage - tzel.defense
 
     def updateAtributs(self, strength, agility, intelligent, defense, attack):
         self.hp += strength * 10 - self.strength * 10
@@ -31,10 +31,8 @@ class Player:
         self.agility = agility
         self.mana += intelligent * 10 - self.intelligent * 10
         self.intelligent = intelligent
-        self.attackDamage = 10 + attack
+        self.attackDamage = 10 + attack + self.strength + self.agility // 2
         self.defense = defense
-
-
 
 
 class PlayerSprites(pygame.sprite.Sprite):

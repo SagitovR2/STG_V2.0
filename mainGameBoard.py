@@ -7,6 +7,7 @@ from Player import Player, PlayerSprites
 from Enemys import Enemy, EnemySprites
 import names
 import sqlite3
+from askItem import askItem
 
 
 class mainGameBoard(Board):
@@ -35,7 +36,7 @@ class mainGameBoard(Board):
         self.player_coords = list(self.cur.execute(
             "SELECT position FROM players WHERE login = '{log}'".format(log=names.player_login)
         ))[0][0].split()
-        self.player = Player((int(self.player_coords[0]), int(self.player_coords[1])), playerImage, "")
+        self.player = Player((int(self.player_coords[0]), int(self.player_coords[1])), self.playerImage, "")
         names.player_coords = (int(self.player_coords[0]), int(self.player_coords[1]))
         self.board[self.player.return_coords()[0]][self.player.return_coords()[1]] = 1
         self.EnemySpr = []
@@ -74,7 +75,6 @@ class mainGameBoard(Board):
                     self.cell_size, self.cell_size
                 )
                 BackImage(self.backSprites, self.backImage, rect)
-        self.items.append()
 
     def updateEnemys(self):
         for i in self.enemys:
@@ -194,6 +194,12 @@ class mainGameBoard(Board):
         if dir == "up":
             if self.player.coords[1] != 0:
                 if self.board[self.player.coords[0]][self.player.coords[1] - 1] == -1:
+                    self.board[self.player.coords[0]][self.player.coords[1] - 1] = 1
+                    self.board[self.player.coords[0]][self.player.coords[1]] = -1
+                    self.player.coords = (self.player.coords[0], self.player.coords[1] - 1)
+                    self.playerSpr.update("up")
+                if self.board[self.player.coords[0]][self.player.coords[1] - 1] == 30:
+                    self.askItem("head")
                     self.board[self.player.coords[0]][self.player.coords[1] - 1] = 1
                     self.board[self.player.coords[0]][self.player.coords[1]] = -1
                     self.player.coords = (self.player.coords[0], self.player.coords[1] - 1)
@@ -325,7 +331,9 @@ class mainGameBoard(Board):
             self.EAL = True
             self.enemys[0].attack(self.player)
         if self.hasLog:
-            self.showMesegesInLog(self.screen, "Вам нанесли {} урона.".format(self.enemys[0].attackDamage),
+            self.showMesegesInLog(self.screen,
+                                  "Вам нанесли {} урона.".format(min(self.enemys[0].attackDamage
+                                                                     - self.player.defense), 1),
                                   pygame.Color("red"))
             self.showMesegesInLog(self.screen, "У вас осталось {} хр из {}.".format(self.player.hp, 100),
                                   pygame.Color("red"))
@@ -577,3 +585,21 @@ class mainGameBoard(Board):
             self.board[x][y] = 34
         if item.type == "shild":
             self.board[x][y] = 35
+
+    def askItem(self, type, item1, item2):
+        self.pause = True
+        aI = askItem(type, item1, item2)
+        if aI.clicked == True:
+            if aI.ret == True:
+                if type == "head":
+                    self.updateEqip(0, item1)
+                if type == "body":
+                    self.updateEqip(1, item1)
+                if type == "arms":
+                    self.updateEqip(2, item1)
+                if type == "foot":
+                    self.updateEqip(3, item1)
+                if type == "weapon":
+                    self.updateEqip(4, item1)
+                if type == "shild":
+                    self.updateEqip(5, item1)
