@@ -19,7 +19,7 @@
      <rect>
       <x>130</x>
       <y>60</y>
-      <width>113</width>
+      <width>151</width>
       <height>20</height>
      </rect>
     </property>
@@ -28,8 +28,8 @@
     <property name="geometry">
      <rect>
       <x>130</x>
-      <y>90</y>
-      <width>113</width>
+      <y>120</y>
+      <width>151</width>
       <height>20</height>
      </rect>
     </property>
@@ -41,8 +41,8 @@
     <property name="geometry">
      <rect>
       <x>130</x>
-      <y>120</y>
-      <width>113</width>
+      <y>150</y>
+      <width>151</width>
       <height>20</height>
      </rect>
     </property>
@@ -54,8 +54,8 @@
     <property name="geometry">
      <rect>
       <x>130</x>
-      <y>150</y>
-      <width>112</width>
+      <y>180</y>
+      <width>151</width>
       <height>41</height>
      </rect>
     </property>
@@ -80,7 +80,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>90</y>
+      <y>120</y>
       <width>111</width>
       <height>16</height>
      </rect>
@@ -93,7 +93,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>120</y>
+      <y>150</y>
       <width>111</width>
       <height>16</height>
      </rect>
@@ -113,6 +113,29 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>90</y>
+      <width>151</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>90</y>
+      <width>61</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Герой</string>
     </property>
    </widget>
   </widget>

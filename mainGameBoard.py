@@ -29,7 +29,7 @@ class mainGameBoard(Board):
         self.player_coords = list(self.cur.execute(
             "SELECT position FROM players WHERE login = '{log}'".format(log=names.player_login)
         ))[0][0].split()
-        self.player = Player((int(self.player_coords[0]), int(self.player_coords[1])), playerImage, "")
+        self.player = Player((int(self.player_coords[0]), int(self.player_coords[1])), load_image(playerImage, -1), "")
         names.player_coords = (int(self.player_coords[0]), int(self.player_coords[1]))
         self.board[self.player.return_coords()[0]][self.player.return_coords()[1]] = 1
         self.EnemySpr = []

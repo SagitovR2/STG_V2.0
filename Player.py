@@ -35,8 +35,6 @@ class Player:
         self.defense = defense
 
 
-
-
 class PlayerSprites(pygame.sprite.Sprite):
     def __init__(self, group, image, coords):
         super().__init__(group)
