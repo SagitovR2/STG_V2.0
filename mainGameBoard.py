@@ -11,6 +11,7 @@ class mainGameBoard(Board):
     def __init__(self, width, height, enemyCount, backImage, playerImage, enemyImage):
         super().__init__(width, height)
         self.attack_coords = (0, 0)
+        self.enemyCount = enemyCount
         self.backImage = load_image(backImage, -1)
         playerImage = load_image(playerImage, -1)
         self.backSprites = pygame.sprite.Group()
@@ -57,6 +58,18 @@ class mainGameBoard(Board):
                         break
                 self.enemys.remove(i)
                 self.board[i.coords[0]][i.coords[1]] = -1
+        if len(self.enemys) < self.enemyCount:
+            x = random.randint(0, 31)
+            y = random.randint(0, 17)
+            while self.board[x][y] != -1:
+                x = random.randint(0, 31)
+                y = random.randint(0, 17)
+            enemy = Enemy((x, y), self.EnemyImage, "")
+            self.enemys.append(enemy)
+            self.EnemySpr.append(EnemySprites(self.EnemySprites, enemy.return_image(),
+                                           (enemy.coords[0] * 40, enemy.coords[1] * 40)))
+            self.board[x][y] = 2
+
 
     def render(self, screen):
         self.backSprites.draw(screen)
