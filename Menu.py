@@ -24,6 +24,7 @@ class FormStarting(QMainWindow):
         if (self.lineEdit.text(), self.lineEdit_2.text()) in self.d:
             names.menu = False
             names.game = True
+            names.player_login = self.lineEdit.text()
             self.close()
         else:
             self.label_3.setText('Такого пользователя не существует.')

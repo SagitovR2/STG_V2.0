@@ -5,6 +5,8 @@ from backImageSprites import BackImage
 import random
 from Player import Player, PlayerSprites
 from Enemys import Enemy, EnemySprites
+import names
+import sqlite3
 
 
 class mainGameBoard(Board):
@@ -20,7 +22,12 @@ class mainGameBoard(Board):
         self.EnemyImage = load_image(enemyImage)
         self.enemys = []
         self.attack_dir = ""
-        self.player = Player((random.randint(0, 31), random.randint(0, 17)), playerImage, "")
+        self.con = sqlite3.connect('database/database.db')
+        self.cur = self.con.cursor()
+        self.player_coords = list(self.cur.execute(
+            "SELECT position FROM players WHERE login = '{log}'".format(log=names.player_login)
+        ))[0][0].split()
+        self.player = Player((int(self.player_coords[0]), int(self.player_coords[1])), playerImage, "")
         self.board[self.player.return_coords()[0]][self.player.return_coords()[1]] = 1
         self.EnemySpr = []
         for i in range(enemyCount):
@@ -58,18 +65,6 @@ class mainGameBoard(Board):
                         break
                 self.enemys.remove(i)
                 self.board[i.coords[0]][i.coords[1]] = -1
-        if len(self.enemys) < self.enemyCount:
-            x = random.randint(0, 31)
-            y = random.randint(0, 17)
-            while self.board[x][y] != -1:
-                x = random.randint(0, 31)
-                y = random.randint(0, 17)
-            enemy = Enemy((x, y), self.EnemyImage, "")
-            self.enemys.append(enemy)
-            self.EnemySpr.append(EnemySprites(self.EnemySprites, enemy.return_image(),
-                                           (enemy.coords[0] * 40, enemy.coords[1] * 40)))
-            self.board[x][y] = 2
-
 
     def render(self, screen):
         self.backSprites.draw(screen)
@@ -181,3 +176,4 @@ class mainGameBoard(Board):
                     self.board[self.player.coords[0]][self.player.coords[1]] = -1
                     self.player.coords = (self.player.coords[0] - 1, self.player.coords[1])
                     self.playerSpr.update("left")
+        names.player_coords = self.player.return_coords()

@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QApplication
 from Menu import FormStarting, Registration
 import names
 import sys
+import sqlite3
 
 
 pygame.init()
@@ -46,6 +47,14 @@ while running:
         mgb.render(screen)
     pygame.display.flip()
     clock.tick(fps)
+con = sqlite3.connect('database/database.db')
+cur = con.cursor()
+cur.execute(
+    'UPDATE players SET position = "{cor}" WHERE login = "{log}"'.format(
+        cor=str(names.player_coords[0]) + ' ' + str(names.player_coords[1]), log=names.player_login
+    )
+)
+con.commit()
 names.game = False
 names.menu = True
 pygame.quit()
