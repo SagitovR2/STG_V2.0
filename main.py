@@ -1,5 +1,10 @@
 import pygame
 from mainGameBoard import mainGameBoard
+from PyQt5.QtWidgets import QApplication
+from Menu import FormStarting, Registration
+import names
+import sys
+import sqlite3
 
 
 pygame.init()
@@ -18,8 +23,6 @@ clock = pygame.time.Clock()
 fps = 60
 screen = pygame.display.set_mode(size)
 running = True
-menu = True
-game = False
 screen.fill((0, 0, 0))
 pygame.display.flip()
 mgb = mainGameBoard(32, 18, 5, "grass_top.png", "charecter.png", "enemyImage.png", screen)
@@ -56,14 +59,14 @@ while running:
                     mgb.moreEnemys()
             if event.type == ENEMYMOVE:
                 mgb.moveToHeroAndAttack()
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == pygame.BUTTON_LEFT and game \
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == pygame.BUTTON_LEFT and names.game \
                     and mgb.attack_coords == (0, 0):
                 mgb.get_click(event.pos)
             if event.type == DELHEROATTACK:
                 mgb.del_attack()
             if event.type == DELENEMYATTACK:
                 mgb.delEnemyAttack()
-            if event.type == pygame.KEYDOWN and game:
+            if event.type == pygame.KEYDOWN and names.game:
                 if event.key == pygame.K_w:
                     mgb.go("up")
                 if event.key == pygame.K_s:
@@ -72,12 +75,22 @@ while running:
                     mgb.go("right")
                 if event.key == pygame.K_a:
                     mgb.go("left")
-    if menu:
-        menu = False
-        game = True
+    if names.menu:
+        names.menu = False
+        names.game = True
     if game:
         screen.fill((0, 0, 0), (0, 0, width, height))
         mgb.render(screen)
     pygame.display.flip()
     clock.tick(fps)
+con = sqlite3.connect('database/database.db')
+cur = con.cursor()
+cur.execute(
+    'UPDATE players SET position = "{cor}" WHERE login = "{log}"'.format(
+        cor=str(names.player_coords[0]) + ' ' + str(names.player_coords[1]), log=names.player_login
+    )
+)
+con.commit()
+names.game = False
+names.menu = True
 pygame.quit()
