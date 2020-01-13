@@ -8,18 +8,26 @@ from Enemys import Enemy, EnemySprites
 import names
 import sqlite3
 from askItem import askItem
+from Items import Item
+import sys
+from PyQt5.QtWidgets import QApplication
 
 
 class mainGameBoard(Board):
     def __init__(self, width, height, enemyCount, backImage, playerImage, enemyImage, screen):
         super().__init__(width, height)
         self.screen = screen
+        self.itemsOnTheMap = dict()
+        self.codes = {
+            30: 'head', 31: 'body', 32: 'arms', 33: 'foot', 34: 'weapon', 35: 'shild'
+        }
         self.attack_coords = (0, 0)
         self.backImage = load_image(backImage, -1)
         self.playerImage = load_image(playerImage, -1)
         self.backSprites = pygame.sprite.Group()
         self.playerSprites = pygame.sprite.Group()
         self.EnemySprites = pygame.sprite.Group()
+        self.dora = 1
         self.EnemyImage = load_image(enemyImage)
         self.headImage = load_image("head.png")
         self.bodyImage = load_image("body.png")
@@ -40,14 +48,15 @@ class mainGameBoard(Board):
         names.player_coords = (int(self.player_coords[0]), int(self.player_coords[1]))
         self.board[self.player.return_coords()[0]][self.player.return_coords()[1]] = 1
         self.EnemySpr = []
-        self.eqip = [0, 0, 0, 0, 0, 0]
+        self.eqip = [self.player.head, self.player.body, self.player.arms,
+                     self.player.foot, self.player.weapon, self.player.shild]
         self.hasInventory = False
         self.hasLog = False
         self.EAU = False
         self.EAD = False
         self.EAR = False
         self.EAL = False
-        self.items = []
+        self.items = [i[0] for i in self.cur.execute('SELECT name FROM items').fetchall()]
         self.itemOnBoard = 0
         self.logMeseges = []
         for i in range(enemyCount):
@@ -198,8 +207,12 @@ class mainGameBoard(Board):
                     self.board[self.player.coords[0]][self.player.coords[1]] = -1
                     self.player.coords = (self.player.coords[0], self.player.coords[1] - 1)
                     self.playerSpr.update("up")
-                if self.board[self.player.coords[0]][self.player.coords[1] - 1] == 30:
-                    self.askItem("head")
+                if self.board[self.player.coords[0]][self.player.coords[1] - 1] >= 30:
+                    self.askItem(
+                        self.codes[self.board[self.player.coords[0]][self.player.coords[1] - 1]],
+                        self.itemsOnTheMap[str(self.player.coords[0]) + ' ' + str(self.player.coords[1] - 1)],
+                        self.player.eq[self.codes[self.board[self.player.coords[0]][self.player.coords[1] - 1]]]
+                    )
                     self.board[self.player.coords[0]][self.player.coords[1] - 1] = 1
                     self.board[self.player.coords[0]][self.player.coords[1]] = -1
                     self.player.coords = (self.player.coords[0], self.player.coords[1] - 1)
@@ -550,6 +563,19 @@ class mainGameBoard(Board):
                               self.eqip[5].agility, self.eqip[5].intelligent, "d", self.eqip[5].dora)
 
     def updateEqip(self, old_numb, newItem):
+        self.n_type = newItem.type
+        if self.n_type == 'head':
+            self.player.head = newItem
+        elif self.n_type == 'body':
+            self.player.body = newItem
+        elif self.n_type == 'arms':
+            self.player.arms = newItem
+        elif self.n_type == 'foot':
+            self.player.foot = newItem
+        elif self.n_type == 'weapon':
+            self.player.weapon = newItem
+        elif self.n_type == 'shild':
+            self.player.shild = newItem
         self.eqip[old_numb] = newItem
         strength = 0
         agility = 0
@@ -557,9 +583,9 @@ class mainGameBoard(Board):
         defnse = 0
         attack = 0
         for i in range(6):
-            strength += self.eqip[i].strength
-            agility += self.eqip[i].agility
-            intelligent += self.eqip[i].intelligent
+            strength += int(self.eqip[i].strength)
+            agility += int(self.eqip[i].agility)
+            intelligent += int(self.eqip[i].intellegent)
             if i == 4:
                 attack += self.dora
             else:
@@ -572,7 +598,9 @@ class mainGameBoard(Board):
         while self.board[x][y] != -1:
             x = random.randint(0, 31)
             y = random.randint(0, 17)
-        item = random.choice(self.items)
+        self.choosenItem = random.choice(self.items)
+        self.itemsOnTheMap[str(x) + ' ' + str(y)] = Item(self.choosenItem)
+        item = Item(self.choosenItem, (x, y))
         if item.type == "head":
             self.board[x][y] = 30
         if item.type == "body":
@@ -587,11 +615,13 @@ class mainGameBoard(Board):
             self.board[x][y] = 35
 
     def askItem(self, type, item1, item2):
-        self.pause = True
+        names.pause = True
+        global aI
         aI = askItem(type, item1, item2)
-        if aI.clicked == True:
-            if aI.ret == True:
-                self.pause = False
+        aI.show()
+        if aI.clicked is True:
+            if aI.ret is True:
+                names.pause = False
                 if type == "head":
                     self.updateEqip(0, item1)
                 if type == "body":

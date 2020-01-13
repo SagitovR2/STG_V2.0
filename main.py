@@ -25,7 +25,6 @@ fps = 60
 running = True
 while running:
     if names.closing:
-        print(1)
         running = False
         break
     if screen is False and names.closing is False:
@@ -38,7 +37,7 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                mgb.pause = not mgb.pause
+                names.pause = not names.pause
             if event.key == pygame.K_l and not mgb.hasInventory:
                 screen = mgb.log()
             if event.key == pygame.K_i and not mgb.hasLog:
@@ -57,7 +56,7 @@ while running:
                 mgb.showInfoAbout("shild")
             if event.key == pygame.K_m and mgb.hasLog:
                 mgb.showInfoAbout("shild")
-        if not mgb.pause:
+        if not names.pause:
             if event.type == CREATEITEM:
                 mgb.randomItemInRandomPlace()
             if event.type == NEWENEMYCREATE or len(mgb.enemys) == 0:

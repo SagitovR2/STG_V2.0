@@ -1,4 +1,5 @@
 import pygame
+from Items import Item
 
 
 class Player:
@@ -12,6 +13,17 @@ class Player:
         self.defense = 0
         self.hp = 100 + self.strength * 10
         self.mana = self.intelligent * 10
+        # Items
+        self.head = Item('free mask', (None, None))
+        self.body = Item('free coat', (None, None))
+        self.arms = Item('free gloves', (None, None))
+        self.foot = Item('free boots', (None, None))
+        self.weapon = Item("free ironwood's stick", (None, None))
+        self.shild = Item('free shild', (None, None))
+        self.eq = {
+            'head': self.head, 'body': self.body, 'arms': self.arms,
+            'foot': self.foot, 'weapon': self.weapon, 'shild': self.shild
+        }
 
     def return_coords(self):
         return self.coords

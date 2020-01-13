@@ -1,22 +1,23 @@
 import sys
 from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow
+import names
 
 
 class askItem(QMainWindow):
     def __init__(self, type, item1, item2):
         super().__init__()
-        uic.loadUi('askItem.ui', self)
+        uic.loadUi('ui_files/askItem.ui', self)
         self.name1.setText(item1.name)
         self.str1.setText("Сила: " + item1.strength)
         self.agl1.setText("Ловкость: " + item1.agility)
         self.int1.setText("Интелект: " + item1.intellegent)
         if type == "weapon":
-            self.dora1.setText("Урон: " + item1.dora)
+            self.dora.setText("Урон: " + item1.dora)
         else:
-            self.dora1.setText("Защита: " + item1.dora)
+            self.dora.setText("Защита: " + item1.dora)
         if item2 != 0:
-            self.name2.setText(item1.name)
+            self.name2.setText(item2.name)
             self.str2.setText("Сила: " + item2.strength)
             self.agl2.setText("Ловкость: " + item2.agility)
             self.int2.setText("Интелект: " + item2.intellegent)
@@ -37,17 +38,30 @@ class askItem(QMainWindow):
                 self.dora2.setText("Урон: " + "10")
             else:
                 self.dora2.setText("Защита: " + "0")
-        self.pushButton1.clicked.connect(self.returnTrue)
-        self.pushButton1.clicked.connect(self.returnFasle)
+        self.pushButton.clicked.connect(self.returnTrue)
+        self.pushButton_2.clicked.connect(self.returnFasle)
         self.ret = False
-        self.clicked = False
+        self.clicked = True
 
     def returnTrue(self):
+        names.ret = True
+        names.clicked = True
         self.ret = True
         self.clicked = True
         self.close()
 
     def returnFasle(self):
+        names.ret = False
+        names.clicked = True
         self.ret = False
         self.clicked = True
         self.close()
+
+    def closeEvent(self, event):
+        if event.type() == 19:
+            names.pause = False
+            self.close()
+        if event:
+            event.accept()
+        else:
+            self.close()
