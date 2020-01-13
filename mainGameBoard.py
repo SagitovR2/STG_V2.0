@@ -591,6 +591,7 @@ class mainGameBoard(Board):
         aI = askItem(type, item1, item2)
         if aI.clicked == True:
             if aI.ret == True:
+                self.pause = False
                 if type == "head":
                     self.updateEqip(0, item1)
                 if type == "body":
