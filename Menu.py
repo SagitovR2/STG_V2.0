@@ -13,6 +13,9 @@ class FormStarting(QMainWindow):
         self.pushButton_2.clicked.connect(self.vhod)
         self.con = sqlite3.connect('database/database.db')
         self.cur = self.con.cursor()
+        names.menu = False
+        names.game = False
+        self.closing_res = True
 
     def registration(self):
         global form
@@ -25,9 +28,20 @@ class FormStarting(QMainWindow):
             names.menu = False
             names.game = True
             names.player_login = self.lineEdit.text()
+            self.closing_res = False
             self.close()
         else:
             self.label_3.setText('Такого пользователя не существует.')
+
+    def closeEvent(self, event):
+        if event.type() == 19:
+            if self.closing_res:
+                names.closing = True
+            self.close()
+        if event:
+            event.accept()
+        else:
+            self.close()
 
 
 class Registration(QMainWindow):

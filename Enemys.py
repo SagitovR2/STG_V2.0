@@ -1,10 +1,17 @@
 import pygame
+import sqlite3
+import names
 
 
 class Enemy:
     def __init__(self, coords, image, desc):
         self.coords = coords
         self.image = image
+        """self.con = sqlite3.connect('database/database.sql')
+        self.cur = self.con.cursor()
+        self.theStrongest = self.cur.execute(
+            'SELECT theStrongestMob FROM players WHERE login = {login}'.format(login= names.player_login)
+        )"""
         self.hp = 50
         self.attackDamage = 10
         self.defense = 0

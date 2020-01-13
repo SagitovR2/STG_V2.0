@@ -20,13 +20,19 @@ pygame.time.set_timer(DELENEMYATTACK, 1500)
 pygame.time.set_timer(CREATEITEM, 1500)
 size = width, height = 1280, 720
 clock = pygame.time.Clock()
+screen = False
 fps = 60
-screen = pygame.display.set_mode(size)
 running = True
-screen.fill((0, 0, 0))
-pygame.display.flip()
-mgb = mainGameBoard(32, 18, 5, "grass_top.png", "charecter.png", "enemyImage.png", screen)
 while running:
+    if names.closing:
+        print(1)
+        running = False
+        break
+    if screen is False and names.closing is False:
+        screen = pygame.display.set_mode(size)
+        screen.fill((0, 0, 0))
+        pygame.display.flip()
+        mgb = mainGameBoard(32, 18, 5, "grass_top.png", "charecter.png", "enemyImage.png", screen)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -83,14 +89,16 @@ while running:
         mgb.render(screen)
     pygame.display.flip()
     clock.tick(fps)
-con = sqlite3.connect('database/database.db')
-cur = con.cursor()
-cur.execute(
-    'UPDATE players SET position = "{cor}" WHERE login = "{log}"'.format(
-        cor=str(names.player_coords[0]) + ' ' + str(names.player_coords[1]), log=names.player_login
+if names.player_login != '' and names.player_coords != '':
+    con = sqlite3.connect('database/database.db')
+    cur = con.cursor()
+    cur.execute(
+        'UPDATE players SET position = "{cor}" WHERE login = "{log}"'.format(
+            cor=str(names.player_coords[0]) + ' ' + str(names.player_coords[1]), log=names.player_login
+        )
     )
-)
-con.commit()
+    con.commit()
 names.game = False
 names.menu = True
 pygame.quit()
+names.closing = False
