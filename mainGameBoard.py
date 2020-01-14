@@ -177,7 +177,7 @@ class mainGameBoard(Board):
                     self.player.attack(i)
                     if self.hasLog:
                         self.showMesegesInLog(self.screen,
-                                              "Вы нанесли {} урона орку.".format(10))
+                                              "Вы нанесли {} урона орку.".format(self.player.attackDamage))
                         self.showMesegesInLog(self.screen,
                                               "У него осталось {} хп из {}".format(i.hp, 50))
                         if i.hp > 0:

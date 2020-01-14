@@ -13,6 +13,6 @@ class Item:
         ).fetchall()[0]]
         self.strength = self.stats[0]
         self.agility = self.stats[1]
-        self.intellegent = self.stats[2]
+        self.intelligent = self.stats[2]
         self.type = self.stats[3]
         self.dora = self.stats[4]

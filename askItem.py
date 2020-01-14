@@ -15,7 +15,7 @@ class askItem(QMainWindow):
         self.name1.setText(item1.name)
         self.str1.setText("Сила: " + item1.strength)
         self.agl1.setText("Ловкость: " + item1.agility)
-        self.int1.setText("Интелект: " + item1.intellegent)
+        self.int1.setText("Интелект: " + item1.intelligent)
         if type == "weapon":
             self.dora.setText("Урон: " + item1.dora)
         else:
@@ -24,7 +24,7 @@ class askItem(QMainWindow):
             self.name2.setText(item2.name)
             self.str2.setText("Сила: " + item2.strength)
             self.agl2.setText("Ловкость: " + item2.agility)
-            self.int2.setText("Интелект: " + item2.intellegent)
+            self.int2.setText("Интелект: " + item2.intelligent)
             if type == "weapon":
                 self.dora2.setText("Урон: " + item2.dora)
             else:
