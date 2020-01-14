@@ -92,8 +92,19 @@ if names.player_login != '' and names.player_coords != '':
     con = sqlite3.connect('database/database.db')
     cur = con.cursor()
     cur.execute(
-        'UPDATE players SET position = "{cor}" WHERE login = "{log}"'.format(
-            cor=str(names.player_coords[0]) + ' ' + str(names.player_coords[1]), log=names.player_login
+        'UPDATE players SET position = "{cor}",'
+        ' helm = "{helm}",'
+        ' cuirass = "{cuirass}",'
+        ' weapon = "{weapon}",'
+        ' legs = "{legs}",'
+        ' shild = "{shild}" WHERE login = "{log}"'.format(
+            cor=str(names.player_coords[0]) + ' ' + str(names.player_coords[1]),
+            log=names.player_login,
+            helm=list(cur.execute('SELECT id FROM items WHERE name = "{name}"'.format(name=mgb.player.head.name)))[0][0],
+            cuirass=list(cur.execute('SELECT id FROM items WHERE name = "{name}"'.format(name=mgb.player.body.name)))[0][0],
+            weapon=list(cur.execute('SELECT id FROM items WHERE name = "{name}"'.format(name=mgb.player.weapon.name)))[0][0],
+            legs=list(cur.execute('SELECT id FROM items WHERE name = "{name}"'.format(name=mgb.player.foot.name)))[0][0],
+            shild=list(cur.execute('SELECT id FROM items WHERE name = "{name}"'.format(name=mgb.player.shild.name)))[0][0]
         )
     )
     con.commit()

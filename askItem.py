@@ -5,9 +5,13 @@ import names
 
 
 class askItem(QMainWindow):
-    def __init__(self, type, item1, item2):
+    def __init__(self, type, item1, item2, m):
         super().__init__()
         uic.loadUi('ui_files/askItem.ui', self)
+        self.item1 = item1
+        self.m = m
+        self.item2 = item2
+        self.type = type
         self.name1.setText(item1.name)
         self.str1.setText("Сила: " + item1.strength)
         self.agl1.setText("Ловкость: " + item1.agility)
@@ -48,6 +52,9 @@ class askItem(QMainWindow):
         names.clicked = True
         self.ret = True
         self.clicked = True
+        names.eqip = self.item1
+        self.m.ifs(self.type, self.item1)
+        names.pause = False
         self.close()
 
     def returnFasle(self):
@@ -55,6 +62,7 @@ class askItem(QMainWindow):
         names.clicked = True
         self.ret = False
         self.clicked = True
+        names.eqip = self.item2
         self.close()
 
     def closeEvent(self, event):

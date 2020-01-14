@@ -6,3 +6,4 @@ closing = False
 pause = False
 ret = False
 clicked = False
+eqip = ''

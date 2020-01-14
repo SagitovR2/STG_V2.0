@@ -1,5 +1,7 @@
 import pygame
 from Items import Item
+import names
+import sqlite3
 
 
 class Player:
@@ -13,17 +15,21 @@ class Player:
         self.defense = 0
         self.hp = 100 + self.strength * 10
         self.mana = self.intelligent * 10
+        self.con = sqlite3.connect('database/database.db')
+        self.cur = self.con.cursor()
         # Items
-        self.head = Item('free mask', (None, None))
-        self.body = Item('free coat', (None, None))
-        self.arms = Item('free gloves', (None, None))
-        self.foot = Item('free boots', (None, None))
-        self.weapon = Item("free ironwood's stick", (None, None))
-        self.shild = Item('free shild', (None, None))
+        self.head = Item(
+            self.cur.execute('SELECT name FROM items WHERE id = (SELECT helm FROM players WHERE login = "{log}")'.format(log=names.player_login)).fetchall()[0][0], (None, None))
+        self.body = Item(self.cur.execute('SELECT name FROM items WHERE id = (SELECT cuirass FROM players WHERE login = "{log}")'.format(log=names.player_login)).fetchall()[0][0], (None, None))
+        self.arms = Item(self.cur.execute('SELECT name FROM items WHERE id = (SELECT arms FROM players WHERE login = "{log}")'.format(log=names.player_login)).fetchall()[0][0], (None, None))
+        self.foot = Item(self.cur.execute('SELECT name FROM items WHERE id = (SELECT legs FROM players WHERE login = "{log}")'.format(log=names.player_login)).fetchall()[0][0], (None, None))
+        self.weapon = Item(self.cur.execute('SELECT name FROM items WHERE id = (SELECT weapon FROM players WHERE login = "{log}")'.format(log=names.player_login)).fetchall()[0][0], (None, None))
+        self.shild = Item(self.cur.execute('SELECT name FROM items WHERE id = (SELECT shild FROM players WHERE login = "{log}")'.format(log=names.player_login)).fetchall()[0][0], (None, None))
         self.eq = {
             'head': self.head, 'body': self.body, 'arms': self.arms,
             'foot': self.foot, 'weapon': self.weapon, 'shild': self.shild
         }
+        self.updateAtributs(self.strength, self.agility, self.intelligent, self.defense, self.attackDamage)
 
     def return_coords(self):
         return self.coords

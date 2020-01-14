@@ -565,16 +565,22 @@ class mainGameBoard(Board):
     def updateEqip(self, old_numb, newItem):
         self.n_type = newItem.type
         if self.n_type == 'head':
+            self.player.eq['head'] = newItem
             self.player.head = newItem
         elif self.n_type == 'body':
+            self.player.eq['body'] = newItem
             self.player.body = newItem
         elif self.n_type == 'arms':
+            self.player.eq['arms'] = newItem
             self.player.arms = newItem
         elif self.n_type == 'foot':
+            self.player.eq['foot'] = newItem
             self.player.foot = newItem
         elif self.n_type == 'weapon':
+            self.player.eq['weapon'] = newItem
             self.player.weapon = newItem
         elif self.n_type == 'shild':
+            self.player.eq['shild'] = newItem
             self.player.shild = newItem
         self.eqip[old_numb] = newItem
         strength = 0
@@ -617,20 +623,21 @@ class mainGameBoard(Board):
     def askItem(self, type, item1, item2):
         names.pause = True
         global aI
-        aI = askItem(type, item1, item2)
+        aI = askItem(type, item1, item2, self)
         aI.show()
-        if aI.clicked is True:
-            if aI.ret is True:
-                names.pause = False
-                if type == "head":
-                    self.updateEqip(0, item1)
-                if type == "body":
-                    self.updateEqip(1, item1)
-                if type == "arms":
-                    self.updateEqip(2, item1)
-                if type == "foot":
-                    self.updateEqip(3, item1)
-                if type == "weapon":
-                    self.updateEqip(4, item1)
-                if type == "shild":
-                    self.updateEqip(5, item1)
+        if aI.ret:
+            self.ifs(type, item1)
+
+    def ifs(self, type, item1):
+        if type == "head":
+            self.updateEqip(0, item1)
+        if type == "body":
+            self.updateEqip(1, item1)
+        if type == "arms":
+            self.updateEqip(2, item1)
+        if type == "foot":
+            self.updateEqip(3, item1)
+        if type == "weapon":
+            self.updateEqip(4, item1)
+        if type == "shild":
+            self.updateEqip(5, item1)
