@@ -17,7 +17,7 @@ pygame.time.set_timer(NEWENEMYCREATE, 10000)
 pygame.time.set_timer(ENEMYMOVE, 2000)
 pygame.time.set_timer(DELHEROATTACK, 500)
 pygame.time.set_timer(DELENEMYATTACK, 1500)
-pygame.time.set_timer(CREATEITEM, 15000)
+pygame.time.set_timer(CREATEITEM, 1500)
 size = width, height = 1280, 720
 clock = pygame.time.Clock()
 screen = False

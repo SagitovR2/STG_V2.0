@@ -55,6 +55,7 @@ class askItem(QMainWindow):
         names.eqip = self.item1
         self.m.ifs(self.type, self.item1)
         names.pause = False
+        print(1)
         self.close()
 
     def returnFasle(self):

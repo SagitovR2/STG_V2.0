@@ -345,8 +345,7 @@ class mainGameBoard(Board):
             self.enemys[0].attack(self.player)
         if self.hasLog:
             self.showMesegesInLog(self.screen,
-                                  "Вам нанесли {} урона.".format(min(self.enemys[0].attackDamage
-                                                                     - self.player.defense), 1),
+                                  "Вам нанесли {} урона.".format(min(self.enemys[0].attackDamage), 1),
                                   pygame.Color("red"))
             self.showMesegesInLog(self.screen, "У вас осталось {} хр из {}.".format(self.player.hp, 100),
                                   pygame.Color("red"))
