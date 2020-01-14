@@ -58,28 +58,34 @@ class Registration(QMainWindow):
         self.comboBox.activated[str].connect(self.infohero)
 
     def infohero(self):
-        self.label_6.setText(list(self.cur.execute(
-            'SELECT description FROM heroes WHERE name = "{k}"'.format(k=self.comboBox.currentText())))[0][0])
+        pass
 
     def reg(self):
         self.valid = [i[0] for i in list(self.cur.execute('SELECT login FROM players'))]
         if self.lineEdit.text() in self.valid:
-            self.label_5.setText('Пользователь с таким логином уже существует')
+            self.label_4.setText('Пользователь с таким логином уже существует')
         elif self.lineEdit.text() == '':
-            self.label_5.setText('Логин не может быть пустым')
+            self.label_4.setText('Логин не может быть пустым')
         elif len(self.lineEdit_2.text()) == '':
-            self.label_5.setText('Пароль не может быть пустым')
+            self.label_4.setText('Пароль не может быть пустым')
         elif self.lineEdit_2.text() != self.lineEdit_3.text():
-            self.label_5.setText('Пароли не совпадают.')
+            self.label_4.setText('Пароли не совпадают.')
         else:
             self.cur.execute(
-                'INSERT INTO players(login, hero, password, position) VALUES (?,?,?,?)',
+                'INSERT INTO players(login, hero, password, position, helm, cuirass, weapon, legs, shild, arms)'
+                ' VALUES (?,?,?,?,?,?,?,?,?,?)',
                 (
                     self.lineEdit.text(),
                     list(self.cur.execute(
                         'SELECT id FROM heroes WHERE name = "{nam}"'.format(nam=self.comboBox.currentText())))[0][0],
                     self.lineEdit_2.text(),
-                    '1 1'
+                    '1 1',
+                    '4',
+                    '12',
+                    '9',
+                    '10',
+                    '8',
+                    '11'
                 )
             )
             self.con.commit()

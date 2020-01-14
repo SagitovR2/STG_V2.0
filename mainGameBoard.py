@@ -591,11 +591,7 @@ class mainGameBoard(Board):
         for i in range(6):
             strength += int(self.eqip[i].strength)
             agility += int(self.eqip[i].agility)
-            intelligent += int(self.eqip[i].intellegent)
-            if i == 4:
-                attack += self.dora
-            else:
-                defnse += self.dora
+            intelligent += int(self.eqip[i].intelligent)
         self.player.updateAtributs(strength, agility, intelligent, defnse, attack)
 
     def randomItemInRandomPlace(self):
